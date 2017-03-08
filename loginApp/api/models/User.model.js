@@ -1,5 +1,6 @@
-var mongoose	= require('mongoose'),
-	Schema		= mongoose.Schema;
+var mongoose		= require('mongoose'),
+	mongooseHidden	= require('mongoose-hidden')(),
+	Schema			= mongoose.Schema;
 
 var minlength 	= [3,'The value of path `{PATH}` (`{VALUE}`) is shorter than the minimum allowed length ({minlength})'];
 
@@ -14,7 +15,12 @@ var UserSchema	= new Schema({
 		required: true,
 		unique: true
 	},
-	password: String
+	password: {
+		type: String,
+		hide: true
+	}
 });
 
-module.exports	= mongoose.model('User', UserSchema);
+UserSchema.plugin(mongooseHidden);
+
+module.exports	= mongoose.model('User', UserSchema, 'users');
